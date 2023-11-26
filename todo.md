@@ -4,8 +4,7 @@ A Minecraft bedrock WorldEdit usefull for builders
 ### Todo
 - [ ] Commands 
     - [ ] Help
-    - [ ] Replace
-    - [ ] Clone
+    
 - [ ] Code
     - [ ] Cleaner Code
     - [ ] Efficient Code
@@ -19,3 +18,7 @@ A Minecraft bedrock WorldEdit usefull for builders
     - [x] Hallow
     - [x] Walls
     - [x] Undo
+    - [x] Replace
+    - [x] Clone
+        - Copy
+        - Paste

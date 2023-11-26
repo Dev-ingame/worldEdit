@@ -1,12 +1,9 @@
 import "./src/utils";
 import "./src/events/world";
-import "./src/command/commands"
-
-
-
+import "./src/command/commands";
 
 // export function commands(msg, actor, command, args) {
-//     
+//
 //     switch (actor.isOp()) {
 //         case true:
 //             switch (command) {
@@ -76,7 +73,7 @@ import "./src/command/commands"
 //                 default:
 //                     actor.sendMessage(`§cUnknown Command§e: §e${command}`);
 //                     break;
-                    
+
 //             }
 //             break;
 //         default:

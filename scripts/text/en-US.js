@@ -5,14 +5,13 @@ export const error = {
     noVal: "§cCommand Does't Required Any Value",
     noPos: "§cPlease specify a location",
     noBType: "§cPlease specify a block type",
-    onlyNum: "§cInvalid Input, Only Number is allowed"
-}
+    noNum: "§cPlease specify a block type",
+    onlyNum: "§cInvalid Input, Only Number is allowed",
+};
 export const state = {
     Notediting: "§eWorldEditing §aFalse",
-    editing: "§eWorldEditing §aTrue"
-
-    
-}
+    editing: "§eWorldEditing §aTrue",
+};
 export const commandDesc = {
     undo: "§dChange Undo",
     fill: "§eFilled ${result} Blocks ",
@@ -21,6 +20,7 @@ export const commandDesc = {
     hollow: "§eHallowed ${result} Blocks ",
     wall: "§eWall Placed",
     sphere: "§eSphere Placed",
-    center: ""
-
-}
+    center: "§e${result}",
+    copy: "§eCopyed ${result} Blocks",
+    paste: "§ePasted ${result} Blocks",
+};

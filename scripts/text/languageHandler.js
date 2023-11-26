@@ -1,6 +1,5 @@
-export function language(param, command=undefined, actor=undefined, result=undefined){
-    if(command) return param.replace('${command}', command)
-    if(actor) return param.replace('${actor}', actor)
-    if(result) return param.replace('${result}', result)
-    
+export function language(param, type, text) {
+    if (type == "command") return param.replace("${command}", text);
+    if (type == "actor") return param.replace("${actor}", text);
+    if (type == "result") return param.replace("${result}", text);
 }

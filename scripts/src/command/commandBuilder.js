@@ -1,6 +1,5 @@
 import { world, system } from "@minecraft/server";
-import { prefix } from "../../config"
-import { wand } from "../utils";
+import { prefix } from "../../config";
 import { error, state } from "../../text/en-US";
 import { language } from "../../text/languageHandler";
 
@@ -19,17 +18,19 @@ class CommandBuilder {
                 const command = args.shift();
 
                 if (this.commands.has(command)) {
+                    // if (!actor.isOp())
+                    //     return actor.sendMessage(language(error.isOp, command));
+
                     if (actor && actor.isOp()) {
                         this.commands.get(command)(msg, actor, command, args);
                     } else {
-                        console.error(error.cantExecute,command,actor);
-                        if (actor) {
-                            actor.sendMessage(error.isOp,command);
-                        }
+                        console.error(error.cantExecute, command, actor);
                     }
                 } else {
                     if (actor) {
-                        actor.sendMessage(language(error.unknownCommand,command));
+                        actor.sendMessage(
+                            language(error.unknownCommand, "command", command),
+                        );
                     }
                 }
             }
@@ -38,12 +39,13 @@ class CommandBuilder {
         }
     }
 }
-export const commandBuilder = new CommandBuilder()
+export const commandBuilder = new CommandBuilder();
 
 world.beforeEvents.chatSend.subscribe((ev) => {
+    if (!ev.sender.isOp()) return (ev.cancel = false);
+
     system.run(() => {
         commandBuilder.handleChatMessage(ev.message, ev.sender);
     });
-    if(ev.message.startsWith(prefix))return ev.cancel = true;
-
+    if (ev.message.startsWith(prefix)) return (ev.cancel = true);
 });
