@@ -8,9 +8,10 @@ class CommandBuilder {
         this.commands = new Map();
     }
 
-    registerCommand(command, handler) {
-        this.commands.set(command, handler);
+    registerCommand(command, description, handler) {
+        this.commands.set(command, { description, handler });
     }
+
     handleChatMessage(msg, actor) {
         try {
             if (msg.startsWith(prefix)) {
@@ -18,13 +19,13 @@ class CommandBuilder {
                 const command = args.shift();
 
                 if (this.commands.has(command)) {
-                    // if (!actor.isOp())
-                    //     return actor.sendMessage(language(error.isOp, command));
-
                     if (actor && actor.isOp()) {
-                        this.commands.get(command)(msg, actor, command, args);
+                        const { handler } = this.commands.get(command);
+                        this.commands
+                            .get(command)
+                            .handler(msg, actor, command, args);
                     } else {
-                        console.error(error.cantExecute, command, actor);
+                        console.error(error.cantExecute, "command", actor);
                     }
                 } else {
                     if (actor) {
@@ -38,12 +39,30 @@ class CommandBuilder {
             console.error("Error handling chat message:", err);
         }
     }
+
+    getAllCommands() {
+        const commandList = Array.from(this.commands.keys())
+            .map(
+                (command) =>
+                    `§e${command}§a:§c ${
+                        this.commands.get(command).description
+                    }`,
+            )
+            .join(",\n"); // Use a comma and space as separators
+
+        return commandList;
+    }
+
+    getCommand(command) {
+        return this.commands.get(command);
+    }
 }
+
 export const commandBuilder = new CommandBuilder();
 
 world.beforeEvents.chatSend.subscribe((ev) => {
     if (!ev.sender.isOp()) return (ev.cancel = false);
-
+    // ev.sender.location.x.toFixed(0.9);
     system.run(() => {
         commandBuilder.handleChatMessage(ev.message, ev.sender);
     });

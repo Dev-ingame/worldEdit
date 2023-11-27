@@ -2,15 +2,17 @@
 A Minecraft bedrock WorldEdit usefull for builders
 
 ### Todo
-- [ ] Commands 
-    - [ ] Help
+- [x] Commands 
+    - Suggest
     
 - [ ] Code
     - [ ] Cleaner Code
     - [ ] Efficient Code
 
 ### Completed ✓
-- Commands
+- [x] Commands
+    - [x] Help
+    - [x] Up
     - [x] Give Wand 
     - [x] Fill 
     - [x] Sphere

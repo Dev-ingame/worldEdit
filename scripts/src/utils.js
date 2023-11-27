@@ -1,38 +1,26 @@
-import {
-    world,
-    ItemStack,
-    system,
-    Vector,
-    BlockType,
-    BlockStateType,
-    BlockStates,
-} from "@minecraft/server";
+import { world, ItemStack, Vector } from "@minecraft/server";
 
 const overworld = world.getDimension("overworld");
 const player = world.getPlayers()[0];
-
 class Wand {
     _players = {};
     _undoStack = {};
     _cloneStack = {};
 
-    give(player) {
-        try {
-            const Name = player.name;
-            const container = player.getComponent("inventory").container;
-            const hand = player.selectedSlot;
+    give(actor) {
+        console.log("test");
+        const Name = actor.name;
+        const container = actor.getComponent("inventory").container;
+        const hand = actor.selectedSlot;
 
-            container.setItem(hand, new ItemStack("minecraft:wooden_axe", 1));
-            const item = container.getSlot(hand);
-            item.setLore(["WAND"]);
+        container.setItem(hand, new ItemStack("minecraft:wooden_axe", 1));
+        const item = container.getSlot(hand);
+        item.setLore(["WAND"]);
 
-            if (this._players[Name]) {
-                player.sendMessage(`§eYou're already in Edit Mode`);
-            } else {
-                this._players[Name] = { start: undefined, end: undefined };
-            }
-        } catch (err) {
-            console.log(err);
+        if (this._players[Name]) {
+            player.sendMessage(`§eYou're already in Edit Mode`);
+        } else {
+            this._players[Name] = { start: undefined, end: undefined };
         }
     }
     async _toUndoStack(Name, changes) {
@@ -147,7 +135,7 @@ class Wand {
                 let adjustedX = newX;
                 let adjustedZ = newZ;
 
-                switch (facing) {
+                switch (facing.toLowerCase()) {
                     case "east":
                         adjustedX = start.x + (changes[0].z - change.z);
                         adjustedZ = start.z + (change.x - changes[0].x);
