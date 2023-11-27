@@ -5,6 +5,7 @@ const player = world.getPlayers()[0];
 class Wand {
     _players = {};
     _undoStack = {};
+    _redoStack = {};
     _cloneStack = {};
 
     give(actor) {
@@ -29,6 +30,13 @@ class Wand {
         }
         this._undoStack[Name].push(changes);
     }
+    async _toRedoStack(Name, changes) {
+        if (!this._redoStack[Name]) {
+            this._redoStack[Name] = [];
+        }
+        this._redoStack[Name].push(changes);
+    }
+
     async runCommandBatch(commands) {
         for (const command of commands) {
             await overworld.runCommand(command);
@@ -83,15 +91,49 @@ class Wand {
     Undo(player) {
         const Name = player.name;
         const commands = [];
+        const redochanges = [];
         const changes = this._undoStack[Name];
         if (changes && changes.length > 0) {
             const changes = this._undoStack[Name].pop();
+
             changes.forEach((change) => {
+                const blocks = this.getBlock(change.x, change.y, change.z);
+                redochanges.push({
+                    x: change.x,
+                    y: change.y,
+                    z: change.z,
+                    blockType: blocks.typeId,
+                });
                 commands.push(
                     `setblock ${change.x} ${change.y} ${change.z} ${change.blockType}`,
                 );
             });
         }
+        this._toRedoStack(Name, redochanges);
+        this.runCommandBatch(commands);
+    }
+    Redo(player) {
+        const Name = player.name;
+        const commands = [];
+        const undochanges = [];
+        const changes = this._redoStack[Name];
+
+        if (changes && changes.length > 0) {
+            const changes = this._redoStack[Name].pop();
+            changes.forEach((change) => {
+                const blocks = this.getBlock(change.x, change.y, change.z);
+                undochanges.push({
+                    x: change.x,
+                    y: change.y,
+                    z: change.z,
+                    blockType: blocks.typeId,
+                });
+                commands.push(
+                    `setblock ${change.x} ${change.y} ${change.z} ${change.blockType}`,
+                );
+            });
+        }
+        this._toUndoStack(Name, undochanges);
         this.runCommandBatch(commands);
     }
     Copy(player) {
@@ -122,6 +164,7 @@ class Wand {
     Paste(player, facing = "north") {
         const Name = player.name;
         const commands = [];
+        const undochange = [];
         const changes = this._cloneStack[Name];
         const { start } = this._players[Name];
 
@@ -153,13 +196,21 @@ class Wand {
                         adjustedZ = newZ;
                         break;
                 }
+                const block = this.getBlock(adjustedX, newY, adjustedZ);
 
+                undochange.push({
+                    x: adjustedX,
+                    y: newY,
+                    z: adjustedZ,
+                    blockType: block ? block.typeId : blockType,
+                });
                 commands.push(
                     `setblock ${adjustedX} ${newY} ${adjustedZ} ${change.blockType}`,
                 );
             });
 
             this.runCommandBatch(commands);
+            this._toUndoStack(Name, undochange);
             return changes.length;
         }
     }

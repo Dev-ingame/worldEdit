@@ -16,6 +16,7 @@ export const state = {
 };
 export const commandDesc = {
     undo: "§dChange Undo",
+    redo: "§dChange Redo",
     fill: "§eFilled ${result} Blocks ",
     keep: "§eFilled ${result} Blocks ",
     replace: "§eReplace ${result} Blocks",
@@ -43,6 +44,7 @@ export const command = {
         paste: "Paste the copyed area",
         triangle: "Create a pyramid",
         undo: "Undo what you did",
+        redo: "Undo what you did",
         position1: "Area Position 1",
         position2: "Area Position 2",
     },

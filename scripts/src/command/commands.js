@@ -15,6 +15,20 @@ if (debug == true) {
             console.log(actor.name);
             console.log(command);
             console.log(args);
+
+            const redo = wand._redoStack[actor.name];
+            redo.forEach((change) => {
+                console.log(
+                    `${change.x} ${change.y} ${change.z} ${change.blockType}`,
+                );
+            });
+
+            // const undo = wand._undoStack[actor.name];
+            // undo.forEach((change) => {
+            //     console.log(
+            //         `${change.x} ${change.y} ${change.z} ${change.blockType}`,
+            //     );
+            // });
         },
     );
 }
@@ -125,15 +139,24 @@ commandBuilder.registerCommand(
         actor.sendMessage(commandDesc.undo);
     },
 );
+commandBuilder.registerCommand(
+    "redo",
+    command.description.redo,
+    (msg, actor, command, args) => {
+        if (args[0]) return actor.sendMessage(error.noVal);
+        wand.Redo(actor);
+        actor.sendMessage(commandDesc.redo);
+    },
+);
 
 commandBuilder.registerCommand(
     "fill",
     command.description.fill,
     (msg, actor, command, args) => {
-        // if (!args[0]) return actor.sendMessage(error.noBType);
+        if (!args[0]) return actor.sendMessage(error.noBType);
         type = args[0].toLowerCase();
 
-        // if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
+        if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
         result = wand.Fill(actor, type, args[1]);
         actor.sendMessage("test");
         // wand.Fill(actor, type).then((e) => {

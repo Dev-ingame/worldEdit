@@ -20,6 +20,7 @@ A Minecraft bedrock WorldEdit usefull for builders
     - [x] Hallow
     - [x] Walls
     - [x] Undo
+    added - [x] Redo
     - [x] Replace
     - [x] Clone
         - Copy
