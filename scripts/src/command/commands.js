@@ -1,5 +1,4 @@
-import { BlockStateType, BlockStates, Vector, world } from "@minecraft/server";
-import { command, commandDesc, error, state } from "../../text/en-US";
+import { command, commandDesc, error } from "../../text/en-US";
 import { language } from "../../text/languageHandler";
 import { wand } from "../utils";
 import { commandBuilder } from "./commandBuilder";
