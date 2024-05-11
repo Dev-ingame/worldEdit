@@ -70,7 +70,7 @@ class Wand {
     }
 
     getBlock(x, y, z) {
-        const block = overworld.getBlock(new Vector(x, y, z));
+        const block = overworld.getBlock({x, y, z});
         return block || null;
     }
     #CalStartEnd(start, end) {
