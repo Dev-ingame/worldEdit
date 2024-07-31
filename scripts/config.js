@@ -1,2 +1,2 @@
 export const prefix = "!";
-export const debug = true;
+export const debug = false;

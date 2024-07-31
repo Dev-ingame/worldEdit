@@ -28,18 +28,17 @@ function gethand(player) {
     const hand = player.selectedSlotIndex;
     const item = player.getComponent("inventory").container.getSlot(hand);
     console.log(item.hasItem());
-    if (!item.hasItem()) return;
-
+    if (!item.hasItem()) return { item: null, wnd: null };
     const wnd = item.getLore().find((e) => e == "WAND");
-
     return { item, wnd };
 }
 
 world.beforeEvents.playerBreakBlock.subscribe((ev) => {
     const player = ev.player;
-    gethand(ev.player);
 
     if (wand._players[player.name]) {
+        const { wnd } = gethand(ev.player);
+        if (!wnd) return;
         wand._players[player.name].start = ev.block.location;
         player.sendMessage(
             `§aPosition 1: §e${wand._players[player.name].start.x} §7/§e ${
@@ -52,9 +51,10 @@ world.beforeEvents.playerBreakBlock.subscribe((ev) => {
 
 world.beforeEvents.playerInteractWithBlock.subscribe((ev) => {
     const player = ev.player;
-    gethand(ev.player);
 
     if (wand._players[player.name]) {
+        const {  wnd } = gethand(ev.player);
+        if (!wnd) return;
         wand._players[player.name].end = ev.block.location;
         player.sendMessage(
             `§aPosition 2: §e${wand._players[player.name].end.x} §7/§e ${
