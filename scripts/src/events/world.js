@@ -36,6 +36,7 @@ function gethand(player) {
 world.beforeEvents.playerBreakBlock.subscribe((ev) => {
     const player = ev.player;
 
+    
     if (wand._players[player.name]) {
         const { wnd } = gethand(ev.player);
         if (!wnd) return;

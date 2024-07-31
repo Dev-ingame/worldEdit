@@ -4,7 +4,7 @@ import { wand } from "../utils";
 import { commandBuilder } from "./commandBuilder";
 import { debug, prefix } from "../../config";
 
-let size, result, type, Rtype, length;
+let size, result, type, state, Rtype, length;
 if (debug == true) {
     commandBuilder.registerCommand(
         "test",
@@ -156,6 +156,7 @@ commandBuilder.registerCommand(
         type = args[0].toLowerCase();
 
         if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
+        state = args[1];
         result = wand.Fill(actor, type, args[1]);
         actor.sendMessage("test");
         // wand.Fill(actor, type).then((e) => {
@@ -171,8 +172,9 @@ commandBuilder.registerCommand(
         type = args[0].toLowerCase();
         if (typeof args[1] == "number" && args[1] !== undefined)
             return actor.sendMessage(error.onlyNum);
-
-        const result = wand.Triangle(actor, type, args[1], args[2]);
+        size = args[1];
+        state = args[2];
+        const result = wand.Triangle(actor, type, size, args[2]);
         actor.sendMessage(language(commandDesc.fill, "result", result));
         // wand.Fill(actor, type).then((e) => {
         //     actor.sendMessage(language(commandDesc.fill, "", "", e));
@@ -206,7 +208,8 @@ commandBuilder.registerCommand(
         if (!args[0]) return actor.sendMessage(error.noBType);
         type = args[0].toLowerCase();
         if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
-        const result = wand.FillKeep(actor, type);
+        state = args[1];
+        const result = wand.FillKeep(actor, type, state);
         actor.sendMessage(language(commandDesc.fill, "result", result));
     },
 );
@@ -220,7 +223,8 @@ commandBuilder.registerCommand(
         if (!args[1]) return actor.sendMessage(error.noBType);
         Rtype = args[1].toLowerCase();
         if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
-        result = wand.replace(actor, type, Rtype);
+        state = args[2];
+        result = wand.replace(actor, type, Rtype, state);
 
         actor.sendMessage(language(commandDesc.replace, "result", result));
     },
@@ -233,7 +237,8 @@ commandBuilder.registerCommand(
         if (!args[0]) return actor.sendMessage(error.noBType);
         type = args[0].toLowerCase();
         if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
-        result = wand.Hollow(actor, type, Rtype);
+        state = args[1];
+        result = wand.Hollow(actor, type, state);
         actor.sendMessage(language(commandDesc.hollow, "result", result));
     },
 );
@@ -248,8 +253,9 @@ commandBuilder.registerCommand(
         if (typeof args[1] == "number" && args[1] !== undefined)
             return actor.sendMessage(error.onlyNum);
         size = args[1];
+        state = args[2];
         if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
-        result = wand.Sphere(actor, type, size);
+        result = wand.Sphere(actor, type, size, state);
         actor.sendMessage(language(commandDesc.sphere, "result", result));
     },
 );
@@ -261,7 +267,8 @@ commandBuilder.registerCommand(
         if (!args[0]) return actor.sendMessage(error.noBType);
         type = args[0].toLowerCase();
         if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
-        result = wand.Walls(actor, type);
+        state = args[1]
+        result = wand.Walls(actor, type, state);
         actor.sendMessage(language(commandDesc.wall, "result", result));
     },
 );

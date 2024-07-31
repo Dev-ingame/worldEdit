@@ -14,10 +14,10 @@ class Wand {
     give(actor) {
         console.log("test");
         const Name = actor.name;
-        const container = actor.getComponent("inventory").container
-        const hand = actor.selectedSlotIndex
+        const container = actor.getComponent("inventory").container;
+        const hand = actor.selectedSlotIndex;
 
-        console.log(hand)
+        console.log(hand);
 
         container.setItem(hand, new ItemStack("minecraft:wooden_axe"));
         const item = container.getSlot(hand);
@@ -48,7 +48,7 @@ class Wand {
                 await overworld.runCommand(command);
             }
         } catch (error) {
-            return "invalid block"
+            return "invalid block";
         }
     }
     center(start, end) {
@@ -62,7 +62,10 @@ class Wand {
         };
         return center;
     }
-
+    /**
+     *
+     * @param {Player} player
+     */
     hasRequired(player) {
         const playerName = player.name;
         return !(
@@ -96,7 +99,10 @@ class Wand {
             },
         };
     }
-
+    /**
+     *
+     * @param {Player} player
+     */
     Undo(player) {
         const Name = player.name;
         const commands = [];
@@ -121,6 +127,10 @@ class Wand {
         this._toRedoStack(Name, redochanges);
         this.runCommandBatch(commands);
     }
+    /**
+     *
+     * @param {Player} player
+     */
     Redo(player) {
         const Name = player.name;
         const commands = [];
@@ -145,6 +155,9 @@ class Wand {
         this._toUndoStack(Name, undochanges);
         this.runCommandBatch(commands);
     }
+    /**
+     * @param {Player} player
+     */
     Copy(player) {
         const Name = player.name;
         const changes = [];
@@ -170,6 +183,10 @@ class Wand {
 
         return changes.length;
     }
+    /**
+     * @param {Player} player
+     * @param {string} facing
+     */
     Paste(player, facing = "north") {
         const Name = player.name;
         const commands = [];
@@ -223,7 +240,13 @@ class Wand {
             return changes.length;
         }
     }
-
+    /**
+     *
+     * @param {Player} player
+     * @param {string} blockType
+     * @param {string} state
+     * @returns
+     */
     Fill(player, blockType, state = "") {
         const Name = player.name;
         const changes = [];
@@ -254,6 +277,14 @@ class Wand {
         });
         return changes.length;
     }
+    /**
+     *
+     * @param {Player} player
+     * @param {string} blockType
+     * @param {string} newblockType
+     * @param {string} state
+     * @returns
+     */
     replace(player, blockType, newblockType, state = "") {
         const Name = player.name;
         const changes = [];
@@ -286,6 +317,13 @@ class Wand {
         return changes.length;
     }
 
+    /**
+     *
+     * @param {Player} player
+     * @param {string} blockType
+     * @param {string} state
+     * @returns
+     */
     FillKeep(player, blockType, state = "") {
         const Name = player.name;
         const changes = [];
@@ -318,6 +356,13 @@ class Wand {
         return changes.length;
     }
 
+    /**
+     *
+     * @param {Player} player
+     * @param {string} blockType
+     * @param {string} state
+     * @returns
+     */
     Hollow(player, blockType, state = "") {
         const Name = player.name;
         const changes = [];
@@ -353,6 +398,13 @@ class Wand {
         });
         return changes.length;
     }
+    /**
+     *
+     * @param {Player} player
+     * @param {string} blockType
+     * @param {string} state
+     * @returns
+     */
     Walls(player, blockType, state = "") {
         const Name = player.name;
         const changes = [];
@@ -382,6 +434,14 @@ class Wand {
         return changes.length;
     }
 
+    /**
+     *
+     * @param {Player} player
+     * @param {string} blockType
+     * @param {number} height
+     * @param {string} state
+     * @returns
+     */
     Sphere(player, blockType, radius, state = "") {
         const Name = player.name;
         const changes = [];
@@ -424,7 +484,14 @@ class Wand {
         });
         return changes.length;
     }
-
+    /**
+     *
+     * @param {Player} player
+     * @param {string} blockType
+     * @param {number} height
+     * @param {string} state
+     * @returns
+     */
     Triangle(player, blockType, height, state = "") {
         const Name = player.name;
         const changes = [];
@@ -479,7 +546,10 @@ class Wand {
         });
         return changes.length;
     }
-
+    /**
+     *
+     * @param {Player} player
+     */
     Center(player) {
         const Name = player.name;
         const { start, end } = this._players[Name];
