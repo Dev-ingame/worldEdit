@@ -1,4 +1,4 @@
-import { world, system } from "@minecraft/server";
+import { world, system, Player } from "@minecraft/server";
 import { wand } from "../utils";
 import { debug } from "../../config";
 
@@ -19,9 +19,17 @@ world.afterEvents.worldInitialize.subscribe((ev) => {
     }
 });
 
+/**
+ *
+ * @param {Player} player
+ * @returns
+ */
 function gethand(player) {
-    const hand = player.selectedSlot;
+    const hand = player.selectedSlotIndex;
     const item = player.getComponent("inventory").container.getSlot(hand);
+    console.log(item.hasItem());
+    if (!item.hasItem()) return;
+
     const wnd = item.getLore().find((e) => e == "WAND");
 
     return { item, wnd };
@@ -29,9 +37,9 @@ function gethand(player) {
 
 world.beforeEvents.playerBreakBlock.subscribe((ev) => {
     const player = ev.player;
-    const { wnd } = gethand(ev.player);
+    gethand(ev.player);
 
-    if (wnd && wand._players[player.name]) {
+    if (wand._players[player.name]) {
         wand._players[player.name].start = ev.block.location;
         player.sendMessage(
             `§aPosition 1: §e${wand._players[player.name].start.x} §7/§e ${
@@ -44,9 +52,9 @@ world.beforeEvents.playerBreakBlock.subscribe((ev) => {
 
 world.beforeEvents.playerInteractWithBlock.subscribe((ev) => {
     const player = ev.player;
-    const { wnd } = gethand(ev.player);
+    gethand(ev.player);
 
-    if (wnd && wand._players[player.name]) {
+    if (wand._players[player.name]) {
         wand._players[player.name].end = ev.block.location;
         player.sendMessage(
             `§aPosition 2: §e${wand._players[player.name].end.x} §7/§e ${

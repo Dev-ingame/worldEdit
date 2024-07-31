@@ -1,4 +1,4 @@
-import { world, ItemStack, Vector } from "@minecraft/server";
+import { world, ItemStack, Player } from "@minecraft/server";
 
 const overworld = world.getDimension("overworld");
 const player = world.getPlayers()[0];
@@ -8,13 +8,18 @@ class Wand {
     _redoStack = {};
     _cloneStack = {};
 
+    /**
+     * @param {Player} actor
+     */
     give(actor) {
         console.log("test");
         const Name = actor.name;
-        const container = actor.getComponent("inventory").container;
-        const hand = actor.selectedSlot;
+        const container = actor.getComponent("inventory").container
+        const hand = actor.selectedSlotIndex
 
-        container.setItem(hand, new ItemStack("minecraft:wooden_axe", 1));
+        console.log(hand)
+
+        container.setItem(hand, new ItemStack("minecraft:wooden_axe"));
         const item = container.getSlot(hand);
         item.setLore(["WAND"]);
 
@@ -38,8 +43,12 @@ class Wand {
     }
 
     async runCommandBatch(commands) {
-        for (const command of commands) {
-            await overworld.runCommand(command);
+        try {
+            for (const command of commands) {
+                await overworld.runCommand(command);
+            }
+        } catch (error) {
+            return "invalid block"
         }
     }
     center(start, end) {
@@ -70,7 +79,7 @@ class Wand {
     }
 
     getBlock(x, y, z) {
-        const block = overworld.getBlock({x, y, z});
+        const block = overworld.getBlock({ x, y, z });
         return block || null;
     }
     #CalStartEnd(start, end) {
