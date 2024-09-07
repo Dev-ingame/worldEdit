@@ -158,7 +158,7 @@ commandBuilder.registerCommand(
         if (wand.hasRequired(actor)) return actor.sendMessage(error.noPos);
         state = args[1];
         result = wand.Fill(actor, type, args[1]);
-        actor.sendMessage("test");
+        actor.sendMessage(language(commandDesc.fill, "result", result));
         // wand.Fill(actor, type).then((e) => {
         //     actor.sendMessage(language(commandDesc.fill, "", "", e));
         // });
